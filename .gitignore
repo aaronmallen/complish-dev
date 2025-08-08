@@ -1,0 +1,8 @@
+/.idea/
+/coverage/
+/target/
+/tmp/
+.DS_Store
+.env.local
+*.rs.bk
+*.log

@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+#MISE description="Install dependencies and setup the dev environment"
+
+set -eu
+
+if command -v mise >/dev/null 2>&1; then
+  mise install
+else
+  cargo install cargo-audit cargo-llvm-cov cargo-nextest cargo-outdated cargo-sort cargo-workspaces
+fi

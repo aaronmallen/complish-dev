@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+#MISE description="Lint YAML files"
+#MISE alias=["l:yml", "l:yaml", "lint:yml", "lint:yaml"]
+
+set -eu
+
+yamllint .

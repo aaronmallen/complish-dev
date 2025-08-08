@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.metadata.workspaces]
+allow_branch = "main"

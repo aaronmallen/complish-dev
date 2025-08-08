@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+#MISE description="Lint GitHub Actions workflows"
+
+set -eu
+
+actionlint
