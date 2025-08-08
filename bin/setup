@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+#MISE description="install dependencies and setup the dev environment"
+
+rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt
+rustup component add --toolchain nightly-x86_64-unknown-linux-gnu clippy
+cargo install cargo-audit cargo-llvm-cov cargo-nextest cargo-outdated cargo-sort cargo-workspaces
+
+if [ ! -f .env ]; then
+  cat > .env << EOF
+COMPLISH_HOME=$(pwd)/tmp/vault
+EOF
+elif ! grep -q "^COMPLISH_HOME=" .env; then
+  echo "COMPLISH_HOME=$(pwd)/tmp/vault" >> .env
+fi
+
+if [ -f .env ]; then
+  export "$(cat .env | grep -v '^#' | xargs)"
+fi
