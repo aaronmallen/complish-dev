@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+#MISE description="Run unit tests"
+#MISE alias=["t"]
+#USAGE flag "--coverage" help="Generate coverage reports (may fail on macOS nightly)"
+
+set -eu
+
+COVERAGE_MODE=false
+while [ $# -gt 0 ]; do
+  case $1 in
+    --coverage)
+      COVERAGE_MODE=true
+      shift
+      ;;
+    -h | --help)
+      echo "Usage: $0 [--coverage]"
+      echo "  --coverage    Generate coverage reports (may fail on macOS nightly)"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      echo "Use --help for usage information"
+      exit 1
+      ;;
+  esac
+done
+
+if [ "$COVERAGE_MODE" = "true" ]; then
+  cargo llvm-cov nextest --summary-only
+  cargo llvm-cov report --html --output-dir coverage
+  cargo llvm-cov report --cobertura --output-path coverage/cobertura.xml
+  cargo llvm-cov report --lcov --output-path coverage/lcov.info
+else
+  cargo nextest run
+fi

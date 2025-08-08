@@ -1,0 +1,12 @@
+[package]
+authors = ["Aaron Allen <hello@aaronmallen.me>"]
+description = "Core business logic for personal productivity with accomplishment recall"
+documentation = "https://docs.rs/complish"
+edition = "2024"
+homepage = "https://github.com/aaronmallen/complish-dev"
+keywords = ["management", "organization", "productivity", "tasks", "todo"]
+license = "MIT"
+name = "complish"
+readme = "README.md"
+repository = "https://github.com/aaronmallen/complish-dev.git"
+version = "0.1.0"
