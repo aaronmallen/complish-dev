@@ -1,0 +1,20 @@
+[package]
+name = "complish-cli"
+version = "0.1.0"
+edition = "2024"
+description = "command-line task manager with today/next/someday organization"
+authors = ["Aaron Allen (@aaronmallen)"]
+repository = "https://github.com/aaronmallen/complish-dev"
+homepage = "https://github.com/aaronmallen/complish-dev"
+license = "MIT"
+readme = "README.md"
+
+[package.metadata.workspaces]
+independent = true
+
+[[bin]]
+name = "complish"
+path = "src/main.rs"
+
+[dependencies]
+complish = { path = "../complish", version = "0.1" }

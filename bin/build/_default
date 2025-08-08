@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+#MISE description="Build the project"
+#MISE alias=["b"]
+
+cargo build --all --all-features

@@ -1,0 +1,6 @@
+/.idea/
+/coverage/
+/target/
+.DS_Store
+*.rs.bk
+*.log

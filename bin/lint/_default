@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+#MISE description="Run formatting and lint checks"
+#MISE alias=["l"]
+#USAGE flag "--fix" help="Auto-fix issues where possible"
+
+FIX_MODE=false
+while [ $# -gt 0 ]; do
+  case $1 in
+    --fix)
+      FIX_MODE=true
+      shift
+      ;;
+    -h|--help)
+      echo "Usage: $0 [--fix]"
+      echo "  --fix    Auto-fix issues where possible"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      echo "Use --help for usage information"
+      exit 1
+      ;;
+  esac
+done
+
+if [ "${usage_fix:-}" = "true" ]; then
+  FIX_MODE=true
+fi
+
+bin/lint/markdown ${FIX_MODE:+--fix} &&
+bin/lint/yaml &&
+bin/lint/toml ${FIX_MODE:+--fix} &&
+bin/lint/shell &&
+bin/lint/rust ${FIX_MODE:+--fix} &&
+bin/lint/editorconfig

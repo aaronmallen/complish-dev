@@ -1,0 +1,13 @@
+[package]
+name = "complish"
+version = "0.1.0"
+edition = "2024"
+description = "Core library for project-aware task management with git integration"
+authors = ["Aaron Allen (@aaronmallen)"]
+repository = "https://github.com/aaronmallen/complish-dev"
+homepage = "https://github.com/aaronmallen/complish-dev"
+license = "MIT"
+readme = "README.md"
+
+[package.metadata.workspaces]
+independent = true

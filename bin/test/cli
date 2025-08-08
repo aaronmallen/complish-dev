@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+#MISE description="Run unit tests for the complish-cli"
+
+cargo llvm-cov nextest -p complish-cli --branch --summary-only
