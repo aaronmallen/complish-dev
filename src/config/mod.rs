@@ -4,6 +4,8 @@ use eyre::Result;
 use serde::{Deserialize, Serialize};
 use toml::map::Map;
 
+use crate::services::TomlLoaderService;
+
 mod filepath;
 mod vault;
 
@@ -21,17 +23,7 @@ impl Config {
   }
 
   pub fn load() -> Self {
-    let config_path = Self::filepath();
-    let mut config = Self::default();
-
-    if config_path.exists()
-      && let Ok(content) = std::fs::read_to_string(&config_path)
-      && let Ok(partial_config) = toml::from_str::<Self>(&content)
-    {
-      config = partial_config;
-    }
-
-    config
+    TomlLoaderService::load_or_default(&Self::filepath())
   }
 
   pub fn save(&self) -> Result<()> {
