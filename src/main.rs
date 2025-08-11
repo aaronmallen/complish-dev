@@ -3,6 +3,7 @@ use std::process;
 mod cli;
 mod config;
 mod entities;
+mod index;
 mod services;
 
 fn main() {
