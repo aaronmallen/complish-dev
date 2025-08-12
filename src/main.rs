@@ -4,6 +4,7 @@ mod cli;
 mod config;
 mod entities;
 mod index;
+mod repos;
 mod services;
 
 fn main() {
