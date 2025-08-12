@@ -6,6 +6,7 @@ mod entities;
 mod index;
 mod repos;
 mod services;
+mod ui;
 
 fn main() {
   if let Err(e) = cli::run() {
