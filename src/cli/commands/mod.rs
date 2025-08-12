@@ -7,6 +7,7 @@ use eyre::Result;
 mod config;
 mod init;
 mod mv;
+mod task;
 mod version;
 
 /// Complish CLI commands
@@ -16,6 +17,7 @@ pub enum Commands {
   Config(config::Config),
   Init(init::Init),
   Mv(mv::Mv),
+  Task(task::Task),
   #[command(long_flag = "version", short_flag = 'v')]
   Version(version::Version),
 }
@@ -26,6 +28,7 @@ impl Commands {
       Commands::Config(cmd) => cmd.run(),
       Commands::Init(cmd) => cmd.run(),
       Commands::Mv(cmd) => cmd.run(),
+      Commands::Task(cmd) => cmd.run(),
       Commands::Version(cmd) => cmd.run(),
     }
   }
