@@ -15,9 +15,12 @@ independent = true
 [dependencies]
 dir_spec = "0.3"
 eyre = { workspace = true }
+log = { workspace = true }
+rusqlite = { version = "0.37", features = ["bundled"] }
 
 [dev-dependencies]
 pretty_assertions = { workspace = true }
+temp-dir = { workspace = true }
 temp-env = { workspace = true }
 
 [lints]

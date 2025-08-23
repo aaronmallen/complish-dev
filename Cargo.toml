@@ -7,7 +7,9 @@ allow_branch = "main"
 
 [workspace.dependencies]
 eyre = "0.6"
+log = "0.4"
 pretty_assertions = "1.4"
+temp-dir = "0.1"
 temp-env = "0.3"
 
 [workspace.lints.clippy]
