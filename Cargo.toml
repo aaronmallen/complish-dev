@@ -5,6 +5,10 @@ members = ["crates/complish"]
 [workspace.metadata.workspaces]
 allow_branch = "main"
 
+[workspace.dependencies]
+pretty_assertions = "1.4"
+temp-env = "0.3"
+
 [workspace.lints.clippy]
 complexity = { level = "warn", priority = -1 }
 correctness = { level = "warn", priority = -1 }

@@ -12,5 +12,9 @@ readme = "README.md"
 [package.metadata.workspaces]
 independent = true
 
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+temp-env = { workspace = true }
+
 [lints]
 workspace = true
