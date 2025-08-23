@@ -6,6 +6,7 @@ members = ["crates/complish"]
 allow_branch = "main"
 
 [workspace.dependencies]
+chrono = { version = "0.4", features = ["serde"] }
 eyre = "0.6"
 log = "0.4"
 pretty_assertions = "1.4"

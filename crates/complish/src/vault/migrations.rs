@@ -4,10 +4,16 @@ use eyre::{Context, Result};
 use log::debug;
 use rusqlite::Connection;
 
-const MIGRATIONS: &[(&str, &str)] = &[(
-  "001_enable_foreign_keys.sql",
-  include_str!("./migrations/001_enable_foreign_keys.sql"),
-)];
+const MIGRATIONS: &[(&str, &str)] = &[
+  (
+    "001_enable_foreign_keys.sql",
+    include_str!("./migrations/001_enable_foreign_keys.sql"),
+  ),
+  (
+    "002_create_lists.sql",
+    include_str!("./migrations/002_create_lists.sql"),
+  ),
+];
 
 pub fn run(vault_path: &PathBuf) -> Result<()> {
   if let Some(parent) = vault_path.parent() {

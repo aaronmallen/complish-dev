@@ -13,10 +13,13 @@ readme = "README.md"
 independent = true
 
 [dependencies]
+chrono = { workspace = true }
 dir_spec = "0.3"
 eyre = { workspace = true }
+getset = "0.1"
 log = { workspace = true }
-rusqlite = { version = "0.37", features = ["bundled"] }
+rusqlite = { version = "0.37", features = ["bundled", "chrono"] }
+serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]
 pretty_assertions = { workspace = true }
