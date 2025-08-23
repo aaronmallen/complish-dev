@@ -6,6 +6,7 @@ members = ["crates/complish"]
 allow_branch = "main"
 
 [workspace.dependencies]
+eyre = "0.6"
 pretty_assertions = "1.4"
 temp-env = "0.3"
 
