@@ -19,7 +19,7 @@ pub struct Task {
   #[get = "pub"]
   id: u32,
   #[get = "pub"]
-  list_id: u32,
+  list_id: u8,
   #[get = "pub"]
   status: Status,
   #[get = "pub"]

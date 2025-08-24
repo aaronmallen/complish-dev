@@ -1,6 +1,9 @@
 use rusqlite::{Connection, Result as SqliteResult};
 
-use crate::task::{Task, creator::Creator};
+use crate::{
+  list::Name as ListName,
+  task::{Task, creator::Creator},
+};
 
 pub struct Repo<'a> {
   connection: &'a Connection,
@@ -9,6 +12,9 @@ pub struct Repo<'a> {
 impl<'a> Repo<'a> {
   pub const SELECT_BY_PK_SQL: &'static str = r"
     SELECT * FROM tasks WHERE id = ?1
+  ";
+  pub const SET_LIST_ID_SQL: &'static str = r"
+    UPDATE tasks SET list_id = ?2 WHERE id = ?1
   ";
 
   pub fn new(connection: &'a Connection) -> Self {
@@ -25,6 +31,14 @@ impl<'a> Repo<'a> {
 
   pub fn create(&self, subject: impl Into<String>) -> Creator<'_> {
     Creator::new(self.connection, subject)
+  }
+
+  pub fn move_to_list(&self, id: u32, list_name: ListName) -> SqliteResult<Task> {
+    let list_id = list_name.id();
+    self
+      .connection
+      .execute(Self::SET_LIST_ID_SQL, (id, list_id))?;
+    self.by_pk(id)
   }
 }
 
@@ -78,6 +92,27 @@ mod tests {
       let task_id = creator.create().unwrap();
 
       assert_eq!(task_id, 1);
+    }
+  }
+
+  mod move_to_list {
+    use pretty_assertions::assert_eq;
+
+    use super::*;
+    use crate::{list::Name as ListName, task::repo::Repo};
+
+    #[test]
+    fn it_move_the_task_to_a_new_list() {
+      let (_temp_dir, connection) = get_test_connection();
+      let repo = Repo::new(&connection);
+      let task_id = repo.create("a test task").create().unwrap();
+      let before_task = repo.by_pk(task_id).unwrap();
+
+      assert_eq!(before_task.list_id, ListName::Someday.id());
+
+      let after_task = repo.move_to_list(task_id, ListName::Today).unwrap();
+
+      assert_eq!(after_task.list_id, ListName::Today.id());
     }
   }
 }
