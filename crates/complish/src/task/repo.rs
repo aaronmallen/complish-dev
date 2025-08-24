@@ -1,6 +1,6 @@
 use rusqlite::{Connection, Result as SqliteResult};
 
-use crate::task::Task;
+use crate::task::{Task, creator::Creator};
 
 pub struct Repo<'a> {
   connection: &'a Connection,
@@ -21,6 +21,10 @@ impl<'a> Repo<'a> {
     let mut statement = self.connection.prepare(Self::SELECT_BY_PK_SQL)?;
 
     statement.query_row([id], |row| Task::try_from(row))
+  }
+
+  pub fn create(&self, subject: impl Into<String>) -> Creator<'_> {
+    Creator::new(self.connection, subject)
   }
 }
 
@@ -57,6 +61,23 @@ mod tests {
       let task = repo.by_pk(1).unwrap();
 
       assert_eq!(task.subject, "a test task");
+    }
+  }
+
+  mod create {
+    use pretty_assertions::assert_eq;
+
+    use super::*;
+    use crate::task::repo::Repo;
+
+    #[test]
+    fn it_returns_a_creator() {
+      let (_temp_dir, connection) = get_test_connection();
+      let repo = Repo::new(&connection);
+      let creator = repo.create("a test task");
+      let task_id = creator.create().unwrap();
+
+      assert_eq!(task_id, 1);
     }
   }
 }
