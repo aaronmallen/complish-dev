@@ -17,10 +17,14 @@ name = "complish"
 path = "src/main.rs"
 
 [dependencies]
+chrono = { workspace = true }
 clap = { workspace = true }
 complish = { path = "../complish", version = "0.1" }
 eyre = { workspace = true }
 yansi = { version = "1.0", features = ["detect-env", "detect-tty"] }
+
+[build-dependencies]
+chrono = { workspace = true }
 
 [lints]
 workspace = true
