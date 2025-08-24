@@ -1,3 +1,4 @@
+pub(crate) mod repo;
 mod status;
 
 use chrono::{DateTime, Utc};
