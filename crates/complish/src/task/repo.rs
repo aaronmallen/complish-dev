@@ -2,7 +2,7 @@ use rusqlite::{Connection, Result as SqliteResult};
 
 use crate::{
   list::Name as ListName,
-  task::{Task, creator::Creator},
+  task::{Status, Task, creator::Creator},
 };
 
 pub struct Repo<'a> {
@@ -15,6 +15,9 @@ impl<'a> Repo<'a> {
   ";
   pub const SET_LIST_ID_SQL: &'static str = r"
     UPDATE tasks SET list_id = ?2 WHERE id = ?1
+  ";
+  pub const SET_STATUS_SQL: &'static str = r"
+    UPDATE tasks SET status = ?2 WHERE id = ?1
   ";
 
   pub fn new(connection: &'a Connection) -> Self {
@@ -31,6 +34,13 @@ impl<'a> Repo<'a> {
 
   pub fn create(&self, subject: impl Into<String>) -> Creator<'_> {
     Creator::new(self.connection, subject)
+  }
+
+  pub fn move_to_in_progress(&self, id: u32) -> SqliteResult<Task> {
+    self
+      .connection
+      .execute(Self::SET_STATUS_SQL, (id, Status::InProgress))?;
+    self.by_pk(id)
   }
 
   pub fn move_to_list(&self, id: u32, list_name: ListName) -> SqliteResult<Task> {
@@ -92,6 +102,27 @@ mod tests {
       let task_id = creator.create().unwrap();
 
       assert_eq!(task_id, 1);
+    }
+  }
+
+  mod move_to_in_progress {
+    use pretty_assertions::assert_eq;
+
+    use super::*;
+    use crate::task::{Status, repo::Repo};
+
+    #[test]
+    fn it_move_the_task_to_in_progress_status() {
+      let (_temp_dir, connection) = get_test_connection();
+      let repo = Repo::new(&connection);
+      let task_id = repo.create("a test task").create().unwrap();
+      let before_task = repo.by_pk(task_id).unwrap();
+
+      assert_eq!(before_task.status, Status::Todo);
+
+      let after_task = repo.move_to_in_progress(task_id).unwrap();
+
+      assert_eq!(after_task.status, Status::InProgress);
     }
   }
 
