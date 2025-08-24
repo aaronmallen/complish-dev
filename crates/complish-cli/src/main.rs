@@ -16,7 +16,7 @@ fn main() {
     }
   };
 
-  if let Err(e) = App::run() {
+  if let Err(e) = App::run(&repo) {
     eprintln!("Error: {e}");
     process::exit(1);
   }

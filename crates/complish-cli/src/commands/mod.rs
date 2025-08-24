@@ -2,6 +2,7 @@
 #![allow(clippy::unused_self)]
 
 use clap::Subcommand;
+use complish::vault::repo::Repo;
 use eyre::Result;
 
 mod version;
@@ -13,7 +14,7 @@ pub enum Commands {
 }
 
 impl Commands {
-  pub fn run(self) -> Result<()> {
+  pub fn run(self, repo: &Repo) -> Result<()> {
     match self {
       Self::Version(cmd) => cmd.run(),
     }

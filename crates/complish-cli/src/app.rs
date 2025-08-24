@@ -1,4 +1,5 @@
 use clap::Parser;
+use complish::vault::repo::Repo;
 use eyre::Result;
 
 use crate::commands::Commands;
@@ -17,8 +18,8 @@ pub struct App {
 }
 
 impl App {
-  pub fn run() -> Result<()> {
+  pub fn run(repo: &Repo) -> Result<()> {
     let app = Self::parse();
-    app.command.run()
+    app.command.run(repo)
   }
 }
