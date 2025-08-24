@@ -5,6 +5,7 @@ use rusqlite::Connection;
 
 use crate::{list::repo::Repo as ListRepo, task::repo::Repo as TaskRepo};
 
+#[derive(Debug)]
 pub struct Repo {
   connection: Connection,
 }
