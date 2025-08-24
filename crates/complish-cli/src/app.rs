@@ -1,6 +1,8 @@
 use clap::Parser;
 use eyre::Result;
 
+use crate::commands::Commands;
+
 /// The Complish CLI
 #[derive(Debug, Parser)]
 #[command(
@@ -9,11 +11,14 @@ use eyre::Result;
   author = "Aaron Allen <hello@aaronmallen.me>",
   disable_version_flag = true
 )]
-pub struct App;
+pub struct App {
+  #[command(subcommand)]
+  command: Commands,
+}
 
 impl App {
   pub fn run() -> Result<()> {
     let app = Self::parse();
-    todo!()
+    app.command.run()
   }
 }

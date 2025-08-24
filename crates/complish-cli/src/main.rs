@@ -1,5 +1,6 @@
 mod app;
 mod bootstrapper;
+mod commands;
 
 use std::process;
 
