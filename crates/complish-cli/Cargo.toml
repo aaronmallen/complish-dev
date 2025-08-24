@@ -16,5 +16,9 @@ independent = true
 name = "complish"
 path = "src/main.rs"
 
+[dependencies]
+clap = { workspace = true }
+eyre = { workspace = true }
+
 [lints]
 workspace = true
