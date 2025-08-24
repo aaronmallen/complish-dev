@@ -13,6 +13,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
     "002_create_lists.sql",
     include_str!("./migrations/002_create_lists.sql"),
   ),
+  (
+    "003_create_tasks.sql",
+    include_str!("./migrations/003_create_tasks.sql"),
+  ),
 ];
 
 pub fn run(vault_path: &PathBuf) -> Result<()> {
