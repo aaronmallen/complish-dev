@@ -1,6 +1,10 @@
+use eyre::Result;
 use rusqlite::{Connection, Result as SqliteResult};
 
-use crate::List;
+use crate::{
+  List,
+  task::{Task, repo::Repo as TaskRepo},
+};
 
 pub struct Repo<'a> {
   connection: &'a Connection,
@@ -20,16 +24,28 @@ impl<'a> Repo<'a> {
     }
   }
 
-  pub fn by_name(&self, name: impl Into<String>) -> SqliteResult<List> {
+  pub fn by_name(&self, name: impl Into<String>) -> Result<List> {
     let mut statement = self.connection.prepare(Self::SELECT_BY_NAME_SQL)?;
 
-    statement.query_row([name.into()], |row| List::try_from(row))
+    let mut list = statement.query_row([name.into()], |row| List::try_from(row))?;
+    list.tasks = self.get_tasks_for_list(list.id)?;
+    Ok(list)
   }
 
-  pub fn by_pk(&self, id: u32) -> SqliteResult<List> {
+  pub fn by_pk(&self, id: u32) -> Result<List> {
     let mut statement = self.connection.prepare(Self::SELECT_BY_PK_SQL)?;
 
-    statement.query_row([id], |row| List::try_from(row))
+    let mut list = statement.query_row([id], |row| List::try_from(row))?;
+    list.tasks = self.get_tasks_for_list(list.id)?;
+    Ok(list)
+  }
+
+  fn get_tasks_for_list(&self, list_id: u32) -> SqliteResult<Vec<Task>> {
+    let mut statement = self.connection.prepare(TaskRepo::SELECT_BY_PK_SQL)?;
+
+    statement
+      .query_map([list_id], |row| Task::try_from(row))?
+      .collect()
   }
 }
 

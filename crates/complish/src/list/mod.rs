@@ -5,6 +5,8 @@ use getset::Getters;
 use rusqlite::{Error as SqliteError, Result as SqliteResult, Row};
 use serde::{Deserialize, Serialize};
 
+use crate::task::Task;
+
 #[derive(Clone, Debug, Deserialize, Eq, Getters, PartialEq, Serialize)]
 pub struct List {
   #[get = "pub"]
@@ -13,6 +15,8 @@ pub struct List {
   id: u32,
   #[get = "pub"]
   name: String,
+  #[get = "pub"]
+  tasks: Vec<Task>,
   #[get = "pub"]
   updated_at: DateTime<Utc>,
 }
@@ -25,6 +29,7 @@ impl TryFrom<&Row<'_>> for List {
       created_at: row.get("created_at")?,
       id: row.get("id")?,
       name: row.get("name")?,
+      tasks: Vec::new(),
       updated_at: row.get("updated_at")?,
     })
   }
