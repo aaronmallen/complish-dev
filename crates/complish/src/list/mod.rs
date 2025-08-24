@@ -1,7 +1,9 @@
+mod name;
 pub(crate) mod repo;
 
 use chrono::{DateTime, Utc};
 use getset::Getters;
+pub use name::Name;
 use rusqlite::{Error as SqliteError, Result as SqliteResult, Row};
 use serde::{Deserialize, Serialize};
 
@@ -12,9 +14,9 @@ pub struct List {
   #[get = "pub"]
   created_at: DateTime<Utc>,
   #[get = "pub"]
-  id: u32,
+  id: u8,
   #[get = "pub"]
-  name: String,
+  name: Name,
   #[get = "pub"]
   tasks: Vec<Task>,
   #[get = "pub"]
@@ -61,7 +63,7 @@ mod tests {
         .unwrap();
       let list: List = statement.query_row([], |row| List::try_from(row)).unwrap();
 
-      assert_eq!(list.name(), "Today");
+      assert_eq!(list.name(), &Name::Today);
     }
 
     #[test]

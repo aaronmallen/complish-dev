@@ -39,6 +39,7 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     use super::*;
+    use crate::list::Name as ListName;
 
     #[test]
     fn it_provides_the_list_repo() {
@@ -47,9 +48,9 @@ mod tests {
       migrations::run(&vault_path).unwrap();
 
       let repo = Repo::new(vault_path).unwrap();
-      let today = repo.list().by_name("today").unwrap();
+      let today = repo.list().by_name(ListName::Today).unwrap();
 
-      assert_eq!(today.name(), "Today");
+      assert_eq!(today.name(), &ListName::Today);
     }
   }
 

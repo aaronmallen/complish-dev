@@ -12,8 +12,12 @@ readme = "README.md"
 [package.metadata.workspaces]
 independent = true
 
+[features]
+cli = ["dep:clap"]
+
 [dependencies]
 chrono = { workspace = true }
+clap = { workspace = true, optional = true }
 dir_spec = "0.3"
 eyre = { workspace = true }
 getset = "0.1"

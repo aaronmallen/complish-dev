@@ -3,6 +3,7 @@ use rusqlite::{Connection, Result as SqliteResult};
 
 use crate::{
   List,
+  list::Name,
   task::{Task, repo::Repo as TaskRepo},
 };
 
@@ -11,9 +12,6 @@ pub struct Repo<'a> {
 }
 
 impl<'a> Repo<'a> {
-  pub const SELECT_BY_NAME_SQL: &'static str = r"
-    SELECT * FROM lists WHERE LOWER(name) = LOWER(?1)
-  ";
   pub const SELECT_BY_PK_SQL: &'static str = r"
     SELECT * FROM lists WHERE id = ?1
   ";
@@ -24,15 +22,12 @@ impl<'a> Repo<'a> {
     }
   }
 
-  pub fn by_name(&self, name: impl Into<String>) -> Result<List> {
-    let mut statement = self.connection.prepare(Self::SELECT_BY_NAME_SQL)?;
-
-    let mut list = statement.query_row([name.into()], |row| List::try_from(row))?;
-    list.tasks = self.get_tasks_for_list(list.id)?;
-    Ok(list)
+  pub fn by_name(&self, name: Name) -> Result<List> {
+    let id = name.id();
+    self.by_pk(id)
   }
 
-  pub fn by_pk(&self, id: u32) -> Result<List> {
+  pub fn by_pk(&self, id: u8) -> Result<List> {
     let mut statement = self.connection.prepare(Self::SELECT_BY_PK_SQL)?;
 
     let mut list = statement.query_row([id], |row| List::try_from(row))?;
@@ -40,7 +35,7 @@ impl<'a> Repo<'a> {
     Ok(list)
   }
 
-  fn get_tasks_for_list(&self, list_id: u32) -> SqliteResult<Vec<Task>> {
+  fn get_tasks_for_list(&self, list_id: u8) -> SqliteResult<Vec<Task>> {
     let mut statement = self.connection.prepare(TaskRepo::SELECT_BY_PK_SQL)?;
 
     statement
@@ -67,28 +62,19 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     use super::*;
-    use crate::list::repo::Repo;
+    use crate::list::{name::Name, repo::Repo};
 
     #[test]
     fn it_returns_the_list_by_name() {
       let connection = get_test_connection();
       let repo = Repo::new(&connection);
-      let today = repo.by_name("today").unwrap();
-      let next = repo.by_name("next").unwrap();
-      let someday = repo.by_name("someday").unwrap();
+      let today = repo.by_name(Name::Today).unwrap();
+      let next = repo.by_name(Name::Next).unwrap();
+      let someday = repo.by_name(Name::Someday).unwrap();
 
-      assert_eq!(today.name, "Today");
-      assert_eq!(next.name, "Next");
-      assert_eq!(someday.name, "Someday");
-    }
-
-    #[test]
-    fn it_returns_an_error_if_the_list_does_not_exist() {
-      let connection = get_test_connection();
-      let repo = Repo::new(&connection);
-      let result = repo.by_name("does not exist");
-
-      assert!(result.is_err());
+      assert_eq!(today.name, Name::Today);
+      assert_eq!(next.name, Name::Next);
+      assert_eq!(someday.name, Name::Someday);
     }
   }
 
@@ -96,7 +82,7 @@ mod tests {
     use pretty_assertions::assert_eq;
 
     use super::*;
-    use crate::list::repo::Repo;
+    use crate::list::{name::Name, repo::Repo};
 
     #[test]
     fn it_returns_the_list_by_pk() {
@@ -106,9 +92,9 @@ mod tests {
       let next = repo.by_pk(2).unwrap();
       let someday = repo.by_pk(3).unwrap();
 
-      assert_eq!(today.name, "Today");
-      assert_eq!(next.name, "Next");
-      assert_eq!(someday.name, "Someday");
+      assert_eq!(today.name, Name::Today);
+      assert_eq!(next.name, Name::Next);
+      assert_eq!(someday.name, Name::Someday);
     }
 
     #[test]
