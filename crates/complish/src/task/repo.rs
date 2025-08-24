@@ -10,6 +10,12 @@ pub struct Repo<'a> {
 }
 
 impl<'a> Repo<'a> {
+  pub const COMPLETE_TASK_SQL: &'static str = r"
+    UPDATE tasks
+    SET status = 'done',
+        completed_at = (datetime('now', 'utc') || 'Z')
+    WHERE id = ?1
+  ";
   pub const SELECT_BY_PK_SQL: &'static str = r"
     SELECT * FROM tasks WHERE id = ?1
   ";
@@ -30,6 +36,11 @@ impl<'a> Repo<'a> {
     let mut statement = self.connection.prepare(Self::SELECT_BY_PK_SQL)?;
 
     statement.query_row([id], |row| Task::try_from(row))
+  }
+
+  pub fn complete(&self, id: u32) -> SqliteResult<Task> {
+    self.connection.execute(Self::COMPLETE_TASK_SQL, (id,))?;
+    self.by_pk(id)
   }
 
   pub fn create(&self, subject: impl Into<String>) -> Creator<'_> {
@@ -85,6 +96,29 @@ mod tests {
       let task = repo.by_pk(1).unwrap();
 
       assert_eq!(task.subject, "a test task");
+    }
+  }
+
+  mod complete {
+    use pretty_assertions::{assert_eq, assert_ne};
+
+    use super::*;
+    use crate::task::{Status, repo::Repo};
+
+    #[test]
+    fn it_completes_the_task() {
+      let (_temp_dir, connection) = get_test_connection();
+      let repo = Repo::new(&connection);
+      let task_id = repo.create("a test task").create().unwrap();
+      let before_task = repo.by_pk(task_id).unwrap();
+
+      assert_eq!(before_task.status, Status::Todo);
+      assert_eq!(before_task.completed_at, None);
+
+      let after_task = repo.complete(task_id).unwrap();
+
+      assert_eq!(after_task.status, Status::Done);
+      assert_ne!(after_task.completed_at, None);
     }
   }
 
