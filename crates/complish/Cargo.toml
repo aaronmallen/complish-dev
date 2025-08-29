@@ -15,10 +15,12 @@ independent = true
 [dependencies]
 dir_spec = "0.5"
 eyre = "0.6"
+fastrand = "2.3"
 getset = "0.1"
 log = "0.4"
 rusqlite = { version = "0.37", features = ["bundled"] }
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 toml = "0.9"
 
 [dev-dependencies]
