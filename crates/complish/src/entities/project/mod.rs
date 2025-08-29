@@ -16,7 +16,7 @@ use update::Update;
 use workflow_status::WorkflowStatus;
 
 use crate::{
-  entities::{RGB, Tag},
+  entities::{RGB, Tag, Task},
   types::JsonVec,
 };
 
@@ -40,6 +40,8 @@ pub struct Project {
   resolution: Option<Resolution>,
   #[get = "pub"]
   pub(crate) tags: Vec<Tag>,
+  #[get = "pub"]
+  pub(crate) tasks: Vec<Task>,
   #[get = "pub"]
   updates: JsonVec<Update>,
   #[get = "pub"]
@@ -69,6 +71,7 @@ impl Project {
       name,
       resolution: None,
       tags: Vec::new(),
+      tasks: Vec::new(),
       updates: JsonVec::new(),
       updated_at: now,
       workflow_status: WorkflowStatus::default(),
@@ -217,6 +220,7 @@ impl TryFrom<&Row<'_>> for Project {
       name: row.get("name")?,
       resolution: row.get("resolution")?,
       tags: Vec::new(),
+      tasks: Vec::new(),
       updates: row.get("updates")?,
       updated_at: row.get("updated_at")?,
       workflow_status: row.get("workflow_status")?,
