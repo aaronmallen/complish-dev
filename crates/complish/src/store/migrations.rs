@@ -9,10 +9,16 @@ use eyre::{Context, Result, eyre};
 use log::debug;
 use rusqlite::Connection;
 
-const MIGRATIONS: &[(&str, &str)] = &[(
-  "0001_enable_foreign_keys",
-  include_str!("./migrations/0001_enable_foreign_keys.sql"),
-)];
+const MIGRATIONS: &[(&str, &str)] = &[
+  (
+    "0001_enable_foreign_keys",
+    include_str!("./migrations/0001_enable_foreign_keys.sql"),
+  ),
+  (
+    "0002_create_tags",
+    include_str!("./migrations/0002_create_tags.sql"),
+  ),
+];
 
 pub fn run(store_path: &PathBuf) -> Result<()> {
   debug!("Running migrations on {}", store_path.display());
