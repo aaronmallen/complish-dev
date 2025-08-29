@@ -12,6 +12,10 @@ readme = "README.md"
 [package.metadata.workspaces]
 independent = true
 
+[dependencies]
+dir_spec = "0.5"
+eyre = "0.6"
+
 [dev-dependencies]
 pretty_assertions = "1.4"
 temp-env = "0.3"
