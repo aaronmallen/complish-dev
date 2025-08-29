@@ -38,6 +38,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
     "0007_create_task_relationships",
     include_str!("./migrations/0007_create_task_relationships.sql"),
   ),
+  (
+    "0008_create_journal_entries",
+    include_str!("./migrations/0008_create_journal_entries.sql"),
+  ),
 ];
 
 pub fn run(store_path: &PathBuf) -> Result<()> {

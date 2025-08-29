@@ -1,8 +1,10 @@
+mod journal_entry;
 mod project;
 mod rgb;
 mod tag;
 mod task;
 
+pub use journal_entry::JournalEntry;
 pub use project::{
   Project, resolution::Resolution as ProjectResolution, update::Update as ProjectUpdate,
   update_status::UpdateStatus as ProjectUpdateStatus,
