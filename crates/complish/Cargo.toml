@@ -11,3 +11,10 @@ readme = "README.md"
 
 [package.metadata.workspaces]
 independent = true
+
+[dependencies]
+getset = "0.1"
+
+[dev-dependencies]
+pretty_assertions = "1.4"
+temp-env = "0.3"
