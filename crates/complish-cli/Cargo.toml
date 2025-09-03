@@ -17,4 +17,4 @@ name = "complish"
 path = "src/main.rs"
 
 [dependencies]
-complish = { path = "../complish", version = "0.1" }
+complish = { path = "../complish", version = "0.1", features = ["cli"] }
