@@ -9,6 +9,7 @@ mod sprint;
 mod tag;
 mod task;
 
+pub use db::Repo;
 pub use journal::Entry as JournalEntry;
 pub use project::{
   Project, Resolution as ProjectResolution, Update as ProjectUpdate,
