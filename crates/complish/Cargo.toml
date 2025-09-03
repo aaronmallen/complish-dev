@@ -13,10 +13,12 @@ readme = "README.md"
 independent = true
 
 [dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+cuid2 = "0.1"
 dir_spec = "0.5"
 eyre = "0.6"
 getset = "0.1"
-rusqlite = { version = "0.37", features = ["bundled"] }
+rusqlite = { version = "0.37", features = ["bundled", "chrono"] }
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.9"
 

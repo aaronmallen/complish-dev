@@ -5,10 +5,16 @@ use rusqlite::Connection;
 
 use crate::config::Config;
 
-const MIGRATIONS: &[(&str, &str)] = &[(
-  "0001_enable_foreign_keys",
-  include_str!("migrations/0001_enable_foreign_keys.sql"),
-)];
+const MIGRATIONS: &[(&str, &str)] = &[
+  (
+    "0001_enable_foreign_keys",
+    include_str!("migrations/0001_enable_foreign_keys.sql"),
+  ),
+  (
+    "0002_create_tags",
+    include_str!("migrations/0002_create_tags.sql"),
+  ),
+];
 
 pub fn run(config: Config) -> Result<()> {
   let store_file = config.settings().core().store_file();
