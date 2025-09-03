@@ -6,7 +6,7 @@ use rusqlite::{Error as SqliteError, Result as SqliteResult, Row, types::ToSql};
 use serde::{Deserialize, Serialize};
 
 use super::{Resolution, Update, WorkflowStatus};
-use crate::Tag;
+use crate::{Tag, Task};
 
 #[derive(
   Clone, CloneGetters, Debug, Deserialize, Eq, Getters, MutGetters, PartialEq, Serialize, Setters,
@@ -28,6 +28,8 @@ pub struct Project {
   resolution: Option<Resolution>,
   #[getset(get = "pub", get_mut = "pub")]
   pub(crate) tags: Vec<Tag>,
+  #[getset(get = "pub", get_mut = "pub")]
+  pub(crate) tasks: Vec<Task>,
   #[getset(get = "pub", get_mut = "pub")]
   pub(crate) updates: Vec<Update>,
   #[getset(get_clone = "pub", set = "pub")]
@@ -56,6 +58,7 @@ impl Project {
       name,
       resolution: None,
       tags: Vec::new(),
+      tasks: Vec::new(),
       updates: Vec::new(),
       updated_at: now,
       workflow_status: WorkflowStatus::default(),
@@ -100,6 +103,7 @@ impl TryFrom<&Row<'_>> for Project {
       name: row.get("name")?,
       resolution: row.get("resolution")?,
       tags: Vec::new(),
+      tasks: Vec::new(),
       updates: Vec::new(),
       updated_at: row.get("updated_at")?,
       workflow_status: row.get("workflow_status")?,

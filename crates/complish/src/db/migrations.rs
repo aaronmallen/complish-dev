@@ -26,6 +26,26 @@ const MIGRATIONS: &[(&str, &str)] = &[
     "0005_create_project_tags",
     include_str!("migrations/0005_create_project_tags.sql"),
   ),
+  (
+    "0006_create_tasks",
+    include_str!("migrations/0006_create_tasks.sql"),
+  ),
+  (
+    "0007_create_task_notes",
+    include_str!("migrations/0007_create_task_notes.sql"),
+  ),
+  (
+    "0008_create_task_work_logs",
+    include_str!("migrations/0008_create_task_work_logs.sql"),
+  ),
+  (
+    "0009_create_task_relationships",
+    include_str!("migrations/0009_create_task_relationships.sql"),
+  ),
+  (
+    "0010_create_task_tags",
+    include_str!("migrations/0010_create_task_tags.sql"),
+  ),
 ];
 
 pub fn run(config: Config) -> Result<()> {
