@@ -17,6 +17,7 @@ dir_spec = "0.5"
 eyre = "0.6"
 getset = "0.1"
 serde = { version = "1.0", features = ["derive"] }
+toml = "0.9"
 
 [dev-dependencies]
 pretty_assertions = "1.4"
