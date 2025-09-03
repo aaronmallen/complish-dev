@@ -16,9 +16,11 @@ independent = true
 dir_spec = "0.5"
 eyre = "0.6"
 getset = "0.1"
+rusqlite = { version = "0.37", features = ["bundled"] }
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.9"
 
 [dev-dependencies]
 pretty_assertions = "1.4"
 temp-env = "0.3"
+tempfile = "3.21"
