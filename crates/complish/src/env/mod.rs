@@ -1,16 +1,40 @@
 mod value;
 mod var;
 
-use std::{ffi::OsString, path::PathBuf, sync::LazyLock};
+use std::{ffi::OsString, fmt::Debug, path::PathBuf, sync::LazyLock};
 
 pub use value::Value;
 pub use var::Var;
+
+use crate::diagnostic::{Set as DiagnosticSet, Severity as DiagnosticSeverity};
 
 pub static COMPLISH_CONFIG_HOME: LazyLock<Var<PathBuf, PathBuf>> =
   LazyLock::new(|| Var::new("COMPLISH_CONFIG_HOME", resolve_path));
 
 pub static COMPLISH_DATA_HOME: LazyLock<Var<PathBuf, PathBuf>> =
   LazyLock::new(|| Var::new("COMPLISH_DATA_HOME", resolve_path));
+
+pub fn diagnostic() -> DiagnosticSet {
+  let mut set = DiagnosticSet::new();
+
+  check_var(&mut set, &COMPLISH_CONFIG_HOME, "is not an absolute path");
+  check_var(&mut set, &COMPLISH_DATA_HOME, "is not an absolute path");
+
+  set
+}
+
+fn check_var<T, E>(set: &mut DiagnosticSet, var: &Var<T, E>, message: &str)
+where
+  E: Debug,
+{
+  if let Value::Invalid(val) = var.value() {
+    set.add(
+      DiagnosticSeverity::Warn,
+      format!("{message}: {val:?}"),
+      var.key(),
+    );
+  }
+}
 
 fn resolve_path(var: Option<OsString>) -> Value<PathBuf, PathBuf> {
   var.map(PathBuf::from).map_or(Value::NotSet, |path| {
@@ -26,42 +50,33 @@ fn resolve_path(var: Option<OsString>) -> Value<PathBuf, PathBuf> {
 mod test {
   use super::*;
 
-  #[allow(non_snake_case)]
-  mod COMPLISH_CONFIG_HOME {
+  mod diagnostic {
     use pretty_assertions::assert_eq;
-    use temp_env::with_var;
+    use temp_env::with_vars;
 
     use super::*;
 
     #[test]
-    fn it_returns_an_env_var() {
-      let path = "/test/path";
+    fn it_returns_diagnostics_when_config_home_is_not_absolute() {
+      let relative_path = "test/path";
+      let absolute_path = "/test/path";
 
-      with_var("COMPLISH_CONFIG_HOME", Some(path), || {
-        assert_eq!(COMPLISH_CONFIG_HOME.key(), &"COMPLISH_CONFIG_HOME");
-        assert_eq!(
-          COMPLISH_CONFIG_HOME.value(),
-          &Value::Ok(PathBuf::from(path))
-        );
-      });
-    }
-  }
+      with_vars(
+        [
+          ("COMPLISH_CONFIG_HOME", Some(relative_path)),
+          ("COMPLISH_DATA_HOME", Some(absolute_path)),
+        ],
+        || {
+          let diagnostic = diagnostic();
 
-  #[allow(non_snake_case)]
-  mod COMPLISH_DATA_HOME {
-    use pretty_assertions::assert_eq;
-    use temp_env::with_var;
-
-    use super::*;
-
-    #[test]
-    fn it_returns_an_env_var() {
-      let path = "/test/path";
-
-      with_var("COMPLISH_DATA_HOME", Some(path), || {
-        assert_eq!(COMPLISH_DATA_HOME.key(), &"COMPLISH_DATA_HOME");
-        assert_eq!(COMPLISH_DATA_HOME.value(), &Value::Ok(PathBuf::from(path)));
-      });
+          assert_eq!(diagnostic.warnings().len(), 1);
+          assert_eq!(diagnostic[0].context(), "COMPLISH_CONFIG_HOME");
+          assert_eq!(
+            diagnostic[0].message(),
+            "is not an absolute path: \"test/path\""
+          );
+        },
+      );
     }
   }
 
