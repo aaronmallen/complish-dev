@@ -2,11 +2,13 @@ pub mod config;
 pub mod db;
 mod diagnostic;
 pub mod env;
+mod journal;
 pub(crate) mod macros;
 mod project;
 mod tag;
 mod task;
 
+pub use journal::Entry as JournalEntry;
 pub use project::{
   Project, Resolution as ProjectResolution, Update as ProjectUpdate,
   UpdateStatus as ProjectUpdateStatus, WorkflowStatus as ProjectWorkflowStatus,

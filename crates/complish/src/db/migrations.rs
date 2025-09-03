@@ -46,6 +46,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
     "0010_create_task_tags",
     include_str!("migrations/0010_create_task_tags.sql"),
   ),
+  (
+    "0011_create_journal_entries",
+    include_str!("migrations/0011_create_journal_entries.sql"),
+  ),
 ];
 
 pub fn run(config: Config) -> Result<()> {
