@@ -50,6 +50,14 @@ const MIGRATIONS: &[(&str, &str)] = &[
     "0011_create_journal_entries",
     include_str!("migrations/0011_create_journal_entries.sql"),
   ),
+  (
+    "0012_create_sprints",
+    include_str!("migrations/0012_create_sprints.sql"),
+  ),
+  (
+    "0013_create_sprint_tasks",
+    include_str!("migrations/0013_create_sprint_tasks.sql"),
+  ),
 ];
 
 pub fn run(config: Config) -> Result<()> {
