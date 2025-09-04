@@ -1,10 +1,12 @@
 mod entity;
+mod repo;
 mod resolution;
 mod update;
 mod update_status;
 mod workflow_status;
 
 pub use entity::Project;
+pub(crate) use repo::Repo;
 pub use resolution::Resolution;
 pub use update::Update;
 pub use update_status::UpdateStatus;
