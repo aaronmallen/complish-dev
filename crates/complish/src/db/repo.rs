@@ -1,7 +1,9 @@
 use eyre::Result;
 use rusqlite::Connection;
 
-use crate::{config::Config, project::Repo as ProjectRepo, tag::Repo as TagRepo};
+use crate::{
+  config::Config, journal::Repo as JournalRepo, project::Repo as ProjectRepo, tag::Repo as TagRepo,
+};
 
 pub struct Repo {
   connection: Connection,
@@ -15,6 +17,10 @@ impl Repo {
     Ok(Self {
       connection,
     })
+  }
+
+  pub fn journal(&self) -> JournalRepo<'_> {
+    JournalRepo::new(&self.connection)
   }
 
   pub fn project(&self) -> ProjectRepo<'_> {
