@@ -3,6 +3,7 @@ use rusqlite::Connection;
 
 use crate::{
   config::Config, journal::Repo as JournalRepo, project::Repo as ProjectRepo, tag::Repo as TagRepo,
+  task::Repo as TaskRepo,
 };
 
 pub struct Repo {
@@ -29,5 +30,9 @@ impl Repo {
 
   pub fn tag(&self) -> TagRepo<'_> {
     TagRepo::new(&self.connection)
+  }
+
+  pub fn task(&self) -> TaskRepo<'_> {
+    TaskRepo::new(&self.connection)
   }
 }
