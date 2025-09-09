@@ -1,6 +1,26 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    list_tasks (list_id, task_id) {
+        list_id -> Text,
+        task_id -> Text,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
+    lists (id) {
+        id -> Text,
+        name -> Text,
+        directories -> Text,
+        metadata -> Text,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
     tags (id) {
         id -> Text,
         label -> Text,
@@ -74,12 +94,16 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(list_tasks -> lists (list_id));
+diesel::joinable!(list_tasks -> tasks (task_id));
 diesel::joinable!(task_notes -> tasks (task_id));
 diesel::joinable!(task_tags -> tags (tag_id));
 diesel::joinable!(task_tags -> tasks (task_id));
 diesel::joinable!(task_work_logs -> tasks (task_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+  list_tasks,
+  lists,
   tags,
   task_notes,
   task_relationships,
