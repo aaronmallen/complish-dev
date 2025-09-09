@@ -3,6 +3,24 @@
 
 set -eu
 
+DATA_DIR_VAR="COMPLISH_DATA_DIR=$(pwd)/tmp"
+DATABASE_URL="DATABASE_URL=sqlite://$(pwd)/tmp/store"
+ENV_FILE=".env.local"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "$DATA_DIR_VAR" >"$ENV_FILE"
+  echo "$DATABASE_URL" >>"$ENV_FILE"
+else
+  if ! grep -q "^COMPLISH_DATA_DIR=" "$ENV_FILE"; then
+    echo "$DATA_DIR_VAR" >>"$ENV_FILE"
+  fi
+  if ! grep -q "^DATABASE_URL=" "$ENV_FILE"; then
+    echo "$DATABASE_URL" >>"$ENV_FILE"
+  fi
+fi
+
+mkdir -p tmp
+
 if command -v mise >/dev/null 2>&1; then
   mise install
 else

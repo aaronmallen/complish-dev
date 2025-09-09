@@ -13,3 +13,8 @@ version = "0.1.0"
 
 [dependencies]
 getset = "0.1"
+libsqlite3-sys = { version = "0.35", features = ["bundled"] }
+
+[dependencies.diesel]
+version = "2.3"
+features = ["returning_clauses_for_sqlite_3_35", "sqlite"]
