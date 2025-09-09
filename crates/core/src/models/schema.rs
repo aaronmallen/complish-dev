@@ -1,6 +1,16 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    journal_entries (id) {
+        id -> Text,
+        content -> Text,
+        metadata -> Text,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
     list_tasks (list_id, task_id) {
         list_id -> Text,
         task_id -> Text,
@@ -141,6 +151,7 @@ diesel::joinable!(task_tags -> tasks (task_id));
 diesel::joinable!(task_work_logs -> tasks (task_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+  journal_entries,
   list_tasks,
   lists,
   project_tasks,

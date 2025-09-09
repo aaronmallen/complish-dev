@@ -1,9 +1,11 @@
+mod journal;
 mod list;
 mod project;
 pub mod schema;
 mod tag;
 mod task;
 
+pub use journal::Entry as JournalEntry;
 pub use list::List;
 pub use project::{
   Project, Resolution as ProjectResolution, Update as ProjectUpdate,
