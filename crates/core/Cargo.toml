@@ -10,3 +10,6 @@ name = "complish"
 readme = "README.md"
 repository = "https://github.com/aaronmallen/complish-dev.git"
 version = "0.1.0"
+
+[dependencies]
+getset = "0.1"
