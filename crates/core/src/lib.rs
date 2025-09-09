@@ -5,6 +5,7 @@ pub mod store;
 mod types;
 
 pub use models::{
-  List, Tag, Task, TaskEstimation, TaskNote, TaskPriority, TaskRelationship, TaskRelationshipKind,
+  List, Project, ProjectResolution, ProjectUpdate, ProjectUpdateStatus, ProjectWorkflowStatus, Tag,
+  Task, TaskEstimation, TaskNote, TaskPriority, TaskRelationship, TaskRelationshipKind,
   TaskResolution, TaskWorkLog, TaskWorkflowStatus,
 };
