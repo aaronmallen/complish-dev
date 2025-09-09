@@ -1,0 +1,2 @@
+DROP INDEX IF EXISTS udx_tags_label;
+DROP TABLE IF EXISTS tags;
