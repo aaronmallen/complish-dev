@@ -6,6 +6,6 @@ mod types;
 
 pub use models::{
   JournalEntry, List, Project, ProjectResolution, ProjectUpdate, ProjectUpdateStatus,
-  ProjectWorkflowStatus, Tag, Task, TaskEstimation, TaskNote, TaskPriority, TaskRelationship,
-  TaskRelationshipKind, TaskResolution, TaskWorkLog, TaskWorkflowStatus,
+  ProjectWorkflowStatus, Sprint, Tag, Task, TaskEstimation, TaskNote, TaskPriority,
+  TaskRelationship, TaskRelationshipKind, TaskResolution, TaskWorkLog, TaskWorkflowStatus,
 };

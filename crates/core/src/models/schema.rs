@@ -68,6 +68,26 @@ diesel::table! {
 }
 
 diesel::table! {
+    sprint_tasks (sprint_id, task_id) {
+        sprint_id -> Text,
+        task_id -> Text,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
+    sprints (id) {
+        id -> Text,
+        metadata -> Text,
+        started_at -> Timestamp,
+        ended_at -> Timestamp,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
+diesel::table! {
     tags (id) {
         id -> Text,
         label -> Text,
@@ -145,6 +165,8 @@ diesel::joinable!(list_tasks -> tasks (task_id));
 diesel::joinable!(project_tasks -> projects (project_id));
 diesel::joinable!(project_tasks -> tasks (task_id));
 diesel::joinable!(project_updates -> projects (project_id));
+diesel::joinable!(sprint_tasks -> sprints (sprint_id));
+diesel::joinable!(sprint_tasks -> tasks (task_id));
 diesel::joinable!(task_notes -> tasks (task_id));
 diesel::joinable!(task_tags -> tags (tag_id));
 diesel::joinable!(task_tags -> tasks (task_id));
@@ -157,6 +179,8 @@ diesel::allow_tables_to_appear_in_same_query!(
   project_tasks,
   project_updates,
   projects,
+  sprint_tasks,
+  sprints,
   tags,
   task_notes,
   task_relationships,
