@@ -2,6 +2,7 @@ mod journal;
 mod list;
 mod project;
 pub mod schema;
+mod sprint;
 mod tag;
 mod task;
 
@@ -11,6 +12,7 @@ pub use project::{
   Project, Resolution as ProjectResolution, Update as ProjectUpdate,
   UpdateStatus as ProjectUpdateStatus, WorkflowStatus as ProjectWorkflowStatus,
 };
+pub use sprint::Sprint;
 pub use tag::Tag;
 pub use task::{
   entities::{Note as TaskNote, Relationship as TaskRelationship, Task, WorkLog as TaskWorkLog},
