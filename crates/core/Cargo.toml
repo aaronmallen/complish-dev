@@ -12,8 +12,16 @@ repository = "https://github.com/aaronmallen/complish-dev.git"
 version = "0.1.0"
 
 [dependencies]
+diesel_migrations = "2.2"
+dir_spec = "0.5"
+eyre = "0.6"
 libsqlite3-sys = { version = "0.35", features = ["bundled"] }
 
 [dependencies.diesel]
 version = "2.2"
-features = ["returning_clauses_for_sqlite_3_35", "sqlite"]
+features = ["r2d2", "returning_clauses_for_sqlite_3_35", "sqlite"]
+
+[dev-dependencies]
+pretty_assertions = "1.4"
+temp-env = "0.3"
+tempfile = "3.21"
