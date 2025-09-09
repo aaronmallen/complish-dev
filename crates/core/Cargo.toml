@@ -10,3 +10,10 @@ name = "complish"
 readme = "README.md"
 repository = "https://github.com/aaronmallen/complish-dev.git"
 version = "0.1.0"
+
+[dependencies]
+libsqlite3-sys = { version = "0.35", features = ["bundled"] }
+
+[dependencies.diesel]
+version = "2.2"
+features = ["returning_clauses_for_sqlite_3_35", "sqlite"]
