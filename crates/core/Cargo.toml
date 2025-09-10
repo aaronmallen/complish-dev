@@ -16,6 +16,8 @@ diesel_migrations = "2.2"
 dir_spec = "0.5"
 eyre = "0.6"
 libsqlite3-sys = { version = "0.35", features = ["bundled"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [dependencies.diesel]
 version = "2.2"
