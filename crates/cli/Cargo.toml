@@ -1,0 +1,22 @@
+[package]
+authors = ["Aaron Allen (@aaronmallen)"]
+categories = ["command-line-utilities", "development-tools"]
+description = "Personal productivity CLI for accomplishment tracking, task management, and performance reporting"
+edition = "2024"
+keywords = ["git-integration", "journaling", "productivity", "reporting", "task-management"]
+homepage = "https://github.com/aaronmallen/complish-dev"
+license = "MIT"
+name = "complish-cli"
+readme = "README.md"
+repository = "https://github.com/aaronmallen/complish-dev"
+version = "0.1.0"
+
+[package.metadata.workspaces]
+independent = true
+
+[dependencies]
+complish = { path = "../core", features = ["cli"] }
+
+[[bin]]
+name = "complish"
+path = "src/main.rs"
