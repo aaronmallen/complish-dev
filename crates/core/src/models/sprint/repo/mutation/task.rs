@@ -2,10 +2,7 @@ use diesel::prelude::*;
 use eyre::Result;
 
 use super::{Sprint, entities::RelatedTask};
-use crate::{
-  models::schema::sprint_tasks,
-  store::with_connection,
-};
+use crate::{models::schema::sprint_tasks, store::with_connection};
 
 impl Sprint {
   pub fn add_task(&mut self, task_id: impl Into<String>) -> Result<()> {

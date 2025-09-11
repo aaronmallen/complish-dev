@@ -3,10 +3,7 @@ use diesel::prelude::*;
 use eyre::{Result, eyre};
 
 use super::Sprint;
-use crate::{
-  models::schema::sprints,
-  store::with_connection,
-};
+use crate::{models::schema::sprints, store::with_connection};
 
 impl Sprint {
   pub fn create() -> Result<Self> {

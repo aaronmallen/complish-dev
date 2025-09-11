@@ -1,3 +1,10 @@
+mod app;
+
+use app::App;
+
 fn main() {
-  println!("Hello, world!");
+  if let Err(e) = App::run() {
+    eprintln!("Error: {}", e);
+    std::process::exit(1)
+  }
 }
