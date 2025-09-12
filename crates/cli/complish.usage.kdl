@@ -1,0 +1,5 @@
+name "complish"
+bin "complish"
+about "A personal productivity tool for managing tasks"
+long_about "Personal productivity CLI for accomplishment tracking, task management, and performance reporting"
+version "0.1.0"
