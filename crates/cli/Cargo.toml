@@ -25,6 +25,7 @@ name = "complish"
 path = "src/main.rs"
 
 [dependencies]
+chrono = { workspace = true }
 clap = { workspace = true }
 color-eyre = "0.6"
 complish = { path = "../core", features = ["cli"] }
