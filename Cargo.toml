@@ -4,3 +4,7 @@ members = ["crates/*"]
 
 [workspace.metadata.workspaces]
 allow_branch = "main"
+
+[workspace.dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4.5", features = ["derive"] }
