@@ -2,8 +2,9 @@ use chrono::NaiveDateTime;
 use clap::Args;
 use color_eyre::{Result, eyre::eyre};
 use complish::{Tag, Task, TaskPriority};
+use yansi::Paint;
 
-use crate::ui::text;
+use crate::ui::{alert, color, text};
 
 /// Create a new task
 #[derive(Args, Debug)]
@@ -48,13 +49,20 @@ impl Create {
       saved_task.add_tag(db_tag.label())?;
     }
 
-    println!(
-      "{} created task #{}",
-      text::success("✔"),
+    let sequence_id_string = format!(
+      " #{} ",
       saved_task
         .sequence_id()
         .ok_or_else(|| eyre!("Something went wrong"))?
-    );
+    )
+      .bg(color::OFF_WHITE)
+      .to_string();
+
+    alert::success(format!(
+      "{} created task {}",
+      text::success("✔"),
+      sequence_id_string
+    ));
     Ok(())
   }
 }
