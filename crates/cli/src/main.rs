@@ -1,5 +1,6 @@
 mod app;
 mod ui;
+mod value_parser;
 
 use std::process;
 
