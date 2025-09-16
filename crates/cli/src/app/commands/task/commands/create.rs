@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use clap::Args;
 use color_eyre::{Result, eyre::eyre};
-use complish::{Task, TaskPriority};
+use complish::{Tag, Task, TaskPriority};
 
 use crate::ui::text;
 
@@ -19,6 +19,9 @@ pub struct Create {
   /// The priority of the task
   #[arg(long, short = 'p')]
   priority: Option<TaskPriority>,
+  /// Tag the task
+  #[arg(long)]
+  tag: Vec<String>,
 }
 
 impl Create {
@@ -38,7 +41,12 @@ impl Create {
     }
 
     task.save()?;
-    let saved_task = Task::find(task.id())?;
+    let mut saved_task = Task::find(task.id())?;
+
+    for tag in self.tag {
+      let db_tag = Tag::find_or_create(tag)?;
+      saved_task.add_tag(db_tag.label())?;
+    }
 
     println!(
       "{} created task #{}",
