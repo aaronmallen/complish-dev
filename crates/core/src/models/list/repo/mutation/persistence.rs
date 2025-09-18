@@ -5,18 +5,19 @@ use super::List;
 use crate::{models::schema::lists, store::with_connection};
 
 impl List {
-  pub fn create(name: impl Into<String>) -> Result<Self> {
-    let list = List::new(name);
+  pub fn find_or_create(name: impl Into<String>) -> Result<Self> {
+    let name = name.into();
 
-    with_connection(|connection| {
-      diesel::insert_into(lists::table)
-        .values(&list)
-        .execute(connection)?;
-
-      Ok(())
-    })?;
-
-    Self::find(list.id())
+    with_connection(|connection| match Self::find_by_name(&name) {
+      Ok(list) => Ok(list),
+      Err(_) => {
+        let list = Self::new(&name);
+        diesel::insert_into(lists::table)
+          .values(&list)
+          .execute(connection)?;
+        Ok(list)
+      }
+    })
   }
 
   pub fn delete(&self) -> Result<()> {

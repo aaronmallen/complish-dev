@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use clap::Args;
 use color_eyre::{Result, eyre::eyre};
-use complish::{Tag, Task, TaskPriority};
+use complish::{List, Tag, Task, TaskPriority};
 use yansi::Paint;
 
 use crate::ui::{alert, color, text};
@@ -17,6 +17,9 @@ pub struct Create {
   /// The due date of the task
   #[arg(long, allow_hyphen_values = true, value_parser = crate::value_parser::naive_datetime)]
   due: Option<NaiveDateTime>,
+  /// The list to add the task to
+  #[arg(long)]
+  list: Option<String>,
   /// The priority of the task
   #[arg(long, short = 'p')]
   priority: Option<TaskPriority>,
@@ -44,6 +47,11 @@ impl Create {
     task.save()?;
     let mut saved_task = Task::find(task.id())?;
 
+    if let Some(list_name) = self.list {
+      let mut list = List::find_or_create(list_name)?;
+      list.add_task(saved_task.id())?;
+    }
+
     for tag in self.tag {
       let db_tag = Tag::find_or_create(tag)?;
       saved_task.add_tag(db_tag.label())?;
@@ -55,8 +63,8 @@ impl Create {
         .sequence_id()
         .ok_or_else(|| eyre!("Something went wrong"))?
     )
-      .bg(color::OFF_WHITE)
-      .to_string();
+    .bg(color::OFF_WHITE)
+    .to_string();
 
     alert::success(format!(
       "{} created task {}",
