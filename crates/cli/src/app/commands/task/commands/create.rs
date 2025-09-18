@@ -23,8 +23,8 @@ pub struct Create {
   /// The priority of the task
   #[arg(long, short = 'p')]
   priority: Option<TaskPriority>,
-  /// Tag the task
-  #[arg(long)]
+  /// Tag the task (can be used multiple times)
+  #[arg(long, short = 't')]
   tag: Vec<String>,
 }
 
