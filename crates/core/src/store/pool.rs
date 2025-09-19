@@ -2,6 +2,7 @@ use std::sync::OnceLock;
 
 use diesel::{
   Connection, SqliteConnection,
+  connection::SimpleConnection,
   r2d2::{ConnectionManager, Pool},
 };
 use eyre::{Result, eyre};
@@ -34,6 +35,7 @@ where
 {
   let pool = get_pool();
   let mut connection = pool.get()?;
+  connection.batch_execute("PRAGMA foreign_keys = ON")?;
   f(&mut connection)
 }
 
@@ -43,6 +45,7 @@ where
 {
   let pool = get_pool();
   let mut connection = pool.get()?;
+  connection.batch_execute("PRAGMA foreign_keys = ON")?;
   connection.transaction(|conn| f(conn))
 }
 
