@@ -36,6 +36,15 @@ pub struct Create {
 
 impl Create {
   pub fn run(self) -> Result<()> {
+    let project = if let Some(ref key) = self.project {
+      Some(
+        Project::find_by_key(key.clone())
+          .map_err(|e| eyre!("Project with key '{}' not found: {}", key, e))?,
+      )
+    } else {
+      None
+    };
+
     let mut task = Task::new(self.title);
 
     if let Some(description) = self.description {
@@ -62,8 +71,7 @@ impl Create {
       list.add_task(saved_task.id())?;
     }
 
-    if let Some(key) = self.project {
-      let mut project = Project::find_by_key(key)?;
+    if let Some(mut project) = project {
       project.add_task(saved_task.id())?;
     }
 
