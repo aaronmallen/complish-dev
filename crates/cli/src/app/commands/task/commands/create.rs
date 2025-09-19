@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use clap::Args;
 use color_eyre::{Result, eyre::eyre};
-use complish::{List, Project, Tag, Task, TaskPriority};
+use complish::{List, Project, Tag, Task, TaskEstimation, TaskPriority};
 use yansi::Paint;
 
 use crate::ui::{alert, color, text};
@@ -17,6 +17,9 @@ pub struct Create {
   /// The due date of the task
   #[arg(long, allow_hyphen_values = true, value_parser = crate::value_parser::naive_datetime)]
   due: Option<NaiveDateTime>,
+  /// The estimated time or effort of the task
+  #[arg(long, short = 'e', value_parser = crate::value_parser::task_estimation)]
+  estimation: Option<TaskEstimation>,
   /// The list to add the task to
   #[arg(long)]
   list: Option<String>,
@@ -45,6 +48,10 @@ impl Create {
 
     if let Some(priority) = self.priority {
       task = task.with_priority(priority);
+    }
+
+    if let Some(estimation) = self.estimation {
+      task = task.with_estimation(estimation);
     }
 
     task.save()?;
