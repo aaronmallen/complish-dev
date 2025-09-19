@@ -1,7 +1,7 @@
 use chrono::NaiveDateTime;
 use clap::Args;
 use color_eyre::{Result, eyre::eyre};
-use complish::{List, Tag, Task, TaskPriority};
+use complish::{List, Project, Tag, Task, TaskPriority};
 use yansi::Paint;
 
 use crate::ui::{alert, color, text};
@@ -23,6 +23,9 @@ pub struct Create {
   /// The priority of the task
   #[arg(long, short = 'p')]
   priority: Option<TaskPriority>,
+  /// The key of the project the task belongs to
+  #[arg(long)]
+  project: Option<String>,
   /// Tag the task (can be used multiple times)
   #[arg(long, short = 't')]
   tag: Vec<String>,
@@ -50,6 +53,11 @@ impl Create {
     if let Some(list_name) = self.list {
       let mut list = List::find_or_create(list_name)?;
       list.add_task(saved_task.id())?;
+    }
+
+    if let Some(key) = self.project {
+      let mut project = Project::find_by_key(key)?;
+      project.add_task(saved_task.id())?;
     }
 
     for tag in self.tag {
