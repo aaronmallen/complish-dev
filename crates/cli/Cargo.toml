@@ -29,6 +29,7 @@ chrono = { workspace = true }
 clap = { workspace = true }
 color-eyre = "0.6"
 complish = { path = "../core", features = ["cli"] }
+crossterm = "0.29"
 yansi = { version = "1.0", features = ["detect-env", "detect-tty"] }
 
 [build-dependencies]

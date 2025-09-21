@@ -22,7 +22,7 @@ macros::impl_string_sql_traits!(Estimation);
 impl Display for Estimation {
   fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
     match self {
-      Self::Points(points) => write!(f, "{points} points"),
+      Self::Points(points) => write!(f, "{points}pts"),
       Self::Time(time) => match time.to_std() {
         Ok(std_duration) => write!(f, "{}", format_duration(std_duration)),
         Err(_) => write!(f, "Invalid duration"),

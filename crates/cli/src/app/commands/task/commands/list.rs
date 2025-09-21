@@ -2,6 +2,8 @@ use clap::Args;
 use color_eyre::Result;
 use complish::{List as TaskList, Project, Task};
 
+use crate::ui::TaskTable;
+
 #[derive(Args, Debug)]
 pub struct List {
   /// Filter tasks by list
@@ -43,48 +45,7 @@ impl List {
       });
     }
 
-    println!(
-      "{:<12} {:<8} {:<10} {:<40} {:<20}",
-      "ID", "Status", "Priority", "Title", "Tags"
-    );
-    println!("{}", "-".repeat(100));
-
-    if tasks.is_empty() {
-      println!("No tasks found matching the filters.");
-    } else {
-      for task in tasks {
-        let id = task.sequence_id().unwrap_or(0);
-        let status = format!("{:?}", task.workflow_status());
-        let priority = format!("{:?}", task.priority());
-        let title = if task.title().len() > 37 {
-          format!("{}...", &task.title()[..37])
-        } else {
-          task.title().to_string()
-        };
-
-        let tags = if let Ok(task_tags) = task.tags() {
-          task_tags
-            .iter()
-            .map(|t| t.label().to_string())
-            .collect::<Vec<_>>()
-            .join(", ")
-        } else {
-          String::new()
-        };
-
-        let tags_display = if tags.len() > 18 {
-          format!("{}...", &tags[..18])
-        } else {
-          tags
-        };
-
-        println!(
-          "{:<12} {:<8} {:<10} {:<40} {:<20}",
-          id, status, priority, title, tags_display
-        );
-      }
-    }
-
+    TaskTable::new(tasks).render();
     Ok(())
   }
 }
