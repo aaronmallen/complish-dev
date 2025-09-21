@@ -3,6 +3,9 @@ mod commands;
 use clap::Args;
 use color_eyre::{Result, eyre::eyre};
 use commands::Commands;
+use complish::Task as TaskEntity;
+
+use crate::ui::TaskDetail;
 
 /// Create, list, and manage tasks
 #[derive(Args, Debug)]
@@ -10,7 +13,7 @@ use commands::Commands;
 pub struct Task {
   #[command(subcommand)]
   command: Option<Commands>,
-  id: Option<u32>,
+  id: Option<i32>,
 }
 
 impl Task {
@@ -20,7 +23,10 @@ impl Task {
     }
 
     if let Some(id) = self.id {
-      todo!()
+      let task =
+        TaskEntity::find_by_sequence_id(id).map_err(|_| eyre!("Task #{} not found", id))?;
+      TaskDetail::new(task).render();
+      return Ok(());
     }
 
     Err(eyre!("No command or id provided"))
