@@ -34,4 +34,4 @@ features = ["chrono", "r2d2", "returning_clauses_for_sqlite_3_35", "sqlite"]
 [dev-dependencies]
 pretty_assertions = "1.4"
 temp-env = "0.3"
-tempfile = "3.21"
+tempfile = "3.23"
