@@ -1,5 +1,8 @@
 # Complish
 
+> [!NOTE]
+> This project has moved to [https://github.com/aaronmallen/complish](https://github.com/aaronmallen/complish)
+
 [![GitHub Actions Workflow Status][build-badge]][build-status]
 [![Codacy Quality][codacy-quality-badge]][codacy]
 [![Codacy Coverage][codacy-coverage-badge]][codacy-coverage]
