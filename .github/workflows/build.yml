@@ -1,0 +1,63 @@
+name: Build
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Install Dependencies
+        run: |
+          rustup component add --toolchain nightly-x86_64-unknown-linux-gnu rustfmt
+          rustup component add --toolchain nightly-x86_64-unknown-linux-gnu clippy
+      - name: Editorconfig Lint
+        run: mise run lint:editorconfig
+      - name: Markdown Lint
+        run: mise run lint:markdown
+      - name: YAML Lint
+        run: mise run lint:yaml
+      - name: TOML Lint
+        run: mise run lint:toml
+      - name: Shellcheck
+        run: mise run lint:shell
+      - name: Rust Lint
+        run: mise run lint:rust
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Cargo test
+        run: mise run test --coverage
+      - name: Report Coverage
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: ${{ env.CODACY_PROJECT_TOKEN != '' }}
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/cobertura.xml
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Build
+        run: mise run build

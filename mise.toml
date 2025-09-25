@@ -1,0 +1,51 @@
+[task_config]
+includes = ["tasks"]
+
+[tasks.ci]
+description = "Run all CI checks"
+depends = ["lint:fix", "test --coverage", "build"]
+
+[tasks.lint]
+description = "Run formatting and lint checks"
+depends = [
+  "lint:editorconfig",
+  "lint:github-actions",
+  "lint:markdown",
+  "lint:yaml",
+  "lint:toml",
+  "lint:shell",
+  "lint:rust",
+]
+
+[tasks."lint:fix"]
+description = "Run formatting and lint checks with auto-correction"
+depends = [
+  "lint:editorconfig",
+  "lint:github-actions",
+  "lint:markdown --fix",
+  "lint:yaml",
+  "lint:toml --fix",
+  "lint:shell --fix",
+  "lint:rust --fix",
+]
+
+[tools]
+actionlint = "latest"
+"cargo:cargo-audit" = "latest"
+"cargo:diesel_cli" = { version = "latest", default-features = false, features = "sqlite" }
+"cargo:cargo-llvm-cov" = "latest"
+"cargo:cargo-nextest" = "latest"
+"cargo:cargo-outdated" = "latest"
+"cargo:cargo-sort" = "latest"
+"cargo:cargo-workspace" = "latest"
+"npm:editorconfig-checker" = "latest"
+"npm:markdownlint-cli" = "latest"
+pipx = "latest"
+"pipx:yamllint" = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+taplo = "latest"
+
+[tools.rust]
+version = "nightly"
+components = "clippy,llvm-tools-preview,rustfmt,rust-src"

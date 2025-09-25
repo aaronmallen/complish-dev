@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+#MISE description="Build the project"
+#MISE alias=["b"]
+#USAGE flag "--release" help="Build the project for release"
+
+set -eu
+
+RELEASE_MODE=false
+while [ $# -gt 0 ]; do
+  case $1 in
+    --release)
+      RELEASE_MODE=true
+      shift
+      ;;
+    -h | --help)
+      echo "Usage: $0 [--release]"
+      echo "  --fix    Build the project for release"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      echo "Use --help for usage information"
+      exit 1
+      ;;
+  esac
+done
+
+if [ "${usage_release:-}" = "true" ]; then
+  RELEASE_MODE=true
+fi
+
+if [ "$RELEASE_MODE" = "true" ]; then
+  cargo build --all --all-features --release
+else
+  cargo build --all --all-features
+fi

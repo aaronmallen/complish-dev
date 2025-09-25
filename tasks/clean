@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+#MISE description="Clean build artifacts and temporary files"
+#MISE alias=["c"]
+
+set -eu
+
+cargo clean
+rm -rf coverage
+rm -rf tmp

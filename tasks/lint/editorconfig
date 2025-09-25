@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+#MISE description="Check EditorConfig compliance"
+#MISE alias=["l:ec", "l:editorconfig", "lint:ec", "lint:editorconfig"]
+
+set -eu
+
+editorconfig-checker
